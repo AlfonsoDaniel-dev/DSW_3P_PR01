@@ -1,8 +1,14 @@
+using dsw_3p_pr01.Repositories;
+using dsw_3p_pr01.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddControllers();
+builder.Services.AddSingleton<IMissionRepository>(_ => new MissionJSONRepository("data/missions.json"));
+builder.Services.AddScoped<IMissionService, MissionService>();
 
 var app = builder.Build();
 
@@ -13,6 +19,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.MapControllers();
 
 var summaries = new[]
 {

@@ -14,6 +14,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1.json", "Missions API v1");
+    });
 }
 
 app.UseHttpsRedirection();

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/[controller]")]
+[Produces("application/json")]
 public class MissionsController : ControllerBase {
 
     private readonly IMissionService _service;
@@ -15,11 +16,14 @@ public class MissionsController : ControllerBase {
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(List<Mission>), StatusCodes.Status200OK)]
     public ActionResult<List<Mission>> GetAll() {
         return Ok(_service.GetAll());
     }
 
     [HttpGet("{id:int}")]
+    [ProducesResponseType(typeof(Mission), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public ActionResult<Mission> GetById(int id) {
         var mission = _service.GetById(id);
         if (mission == null) {
@@ -30,6 +34,8 @@ public class MissionsController : ControllerBase {
     }
 
     [HttpPost]
+    [ProducesResponseType(typeof(Mission), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public ActionResult<Mission> Create([FromBody] Mission mission) {
         var created = _service.Create(mission);
         if (created == null) {
@@ -40,6 +46,8 @@ public class MissionsController : ControllerBase {
     }
 
     [HttpPut("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult Update(int id, [FromBody] Mission mission) {
         if (!_service.Update(id, mission)) {
             return NotFound();
@@ -49,6 +57,8 @@ public class MissionsController : ControllerBase {
     }
 
     [HttpDelete("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult Delete(int id) {
         if (!_service.Delete(id)) {
             return NotFound();

@@ -3,10 +3,12 @@ namespace dsw_3p_pr01.Controllers;
 using dsw_3p_pr01.Models;
 using dsw_3p_pr01.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/misiones")]
 [Produces("application/json")]
+[Authorize]
 public class MissionsController : ControllerBase {
 
     private readonly IMissionService _service;
@@ -66,4 +68,5 @@ public class MissionsController : ControllerBase {
 
         return NoContent();
     }
+
 }
